@@ -19,60 +19,37 @@ new Chef Workstation installation. If you do not have Chef Workstation
 installed, see its [installation guide](/workstation/install_workstation/)
 before proceeding further.
 
-## Configure Ruby Environment
+## Install a Code Editor
 
-For many users of Chef, the version of Ruby that is included in Chef
-Workstation should be configured as the default version of Ruby on your
-system.
+A good visual code editor is not a requirement for working with Chef
+Infra, but a good code editor can save you time. A code editor should
+support the following: themes, plugins, snippets, syntax Ruby code
+coloring/highlighting, multiple cursors, a tree view of the entire
+folder/repository you are working with, and a Git integration.
 
-{{< note >}}
+These are a few common editors:
 
-These instructions are intended for macOS and Linux users. On Windows Chef Workstation includes a desktop shortcut to a PowerShell prompt already configured for use.
+- [Visual Studio Code (free/open source)](http://code.visualstudio.com)
+- [GitHub Atom - (free/open source)](http://atom.io)
 
-{{< /note >}}
+Chef Infra support in editors:
 
-1. Open a terminal and enter the following:
+- [VSCode Chef Infra Extension](https://marketplace.visualstudio.com/items?itemName=chef-software.Chef)
+- [Chef on Atom](https://atom.io/packages/language-chef)
+## Set up Ruby
 
-    ``` bash
-    which ruby
-    ```
+While you don't have to know the Ruby programming language to use Chef, you do need to make sure that your computer knows where to find Ruby in order to run.
 
-    which will return something like `/usr/bin/ruby`.
+* If you don't plan on writing a lot of Chef cookbooks and you don't use Ruby for other purposes, then set up Ruby with an [environment variable]({{< ref "#Add Ruby as an Environment Variable" >}})
+* If you plan on using Ruby for authoring Chef cookbooks but don't use it for other purposes, then we recommend that you use [Chef Workstation's Ruby as the system Ruby]({{< ref "#Use Chef Workstation Ruby as the System Ruby">}}) Use Chef Workstation Ruby as the System Rubyusing the version of Ruby provided in Chef Workstation. Using Chef Workstation's Ruby as your system Ruby is optional.
+* If you use enough different versions of Ruby that you use a Ruby version manager such as RVM or rbenv, then make sure that you have the same version of Ruby available as we ship with Chef Workstation. You probably already know how to do it, but `rvm --help` or `rbenv --help` are great places to start.
 
-2. To use Chef Workstation-provided Ruby as the default Ruby on your system, edit the `$PATH` and `GEM` environment variables to include paths to Chef Workstation. For example, on a machine that runs Bash, run:
+### Add Ruby as an Environment Variable
 
-    ``` bash
-    echo 'eval "$(chef shell-init bash)"' >> ~/.bash_profile
-    ```
+Chef Workstation includes a stable version of Ruby as part of its installer.
+The path to this version of Ruby must be added to the `$PATH` environment variable and saved in the configuration file for the command shell (Bash, csh, and so on) that is used on the machine running Chef Workstation.
 
-    where `bash` and `~/.bash_profile` represents the name of the shell.
-
-    If zsh is your preferred shell then run the following:
-
-    ``` bash
-    echo 'eval "$(chef shell-init zsh)"' >> ~/.zshrc
-    ```
-
-3. Run `which ruby` again. It should return
-    `/opt/chef-workstation/embedded/bin/ruby`.
-
-{{< note >}}
-
-Using Chef Workstation-provided Ruby as your system Ruby is optional.
-For many users, Ruby is primarily used for authoring Chef cookbooks. If
-that's true for you, then using the Chef Workstation-provided Ruby is
-recommended.
-
-{{< /note >}}
-
-Add Ruby to \$PATH
-==================
-
-Chef Infra Client includes a stable version of Ruby as part of its
-installer. The path to this version of Ruby must be added to the `$PATH`
-environment variable and saved in the configuration file for the command
-shell (Bash, csh, and so on) that is used on the machine running Chef
-Workstation. In a command window, type the following:
+In a terminal window, enter:
 
 ``` bash
 echo 'export PATH="/opt/chef-workstation/embedded/bin:$PATH"' >> ~/.configuration_file && source ~/.configuration_file
@@ -94,49 +71,70 @@ On Microsoft Windows, `C:/opscode/Chef Workstation/bin` must be before
 
 {{< /warning >}}
 
+### Use Chef Workstation Ruby as the System Ruby
+
+{{< note >}}
+
+These instructions are intended for macOS and Linux users.
+
+{{< /note >}}
+
+1. Open a terminal and enter:
+
+    ``` bash
+    which ruby
+    ```
+
+    which should return something like `/usr/bin/ruby`.
+
+1. To use the Ruby provided by Chef Workstation as the default Ruby on your system, edit the `$PATH` and `GEM` environment variables to include paths to Chef Workstation. For example, on a machine that runs Bash, run:
+
+    ``` bash
+    echo 'eval "$(chef shell-init bash)"' >> ~/.bash_profile
+    ```
+
+    where `bash` and `~/.bash_profile` represents the name of the shell.
+
+    If zsh is your preferred shell then run the following:
+
+    ``` bash
+    echo 'eval "$(chef shell-init zsh)"' >> ~/.zshrc
+    ```
+
+3. Check the Ruby version again:
+
+   ``` bash
+   which ruby
+   ```
+   should return:
+
+   ``` bash
+   /opt/chef-workstation/embedded/bin/ruby`
+   ```
+
+
 ## Create the Chef repository
 
-Use [the chef generate repo]({{< relref "ctl_chef.md#chef-generate-repo" >}}) to
-create the Chef repository. For example, to create a repository called
+{{% chef_repo_description %}}
+
+Use [the chef generate repo]({{< relref "ctl_chef.md#chef-generate-repo" >}}) command to create the Chef repository. For example, to create a repository called
 `chef-repo`:
 
 ``` bash
 chef generate repo chef-repo
 ```
 
-### Install a Code Editor
-
-A good visual code editor is not a requirement for working with Chef
-Infra, but a good code editor can save you time. A code editor should
-support the following: themes, plugins, snippets, syntax Ruby code
-coloring/highlighting, multiple cursors, a tree view of the entire
-folder/repository you are working with, and a Git integration.
-
-These are a few common editors:
-
-- [Visual Studio Code (free/open source)](http://code.visualstudio.com)
-- [GitHub Atom - (free/open source)](http://atom.io)
-
-Chef Infra support in editors:
-
-- [VSCode Chef Infra Extension](https://marketplace.visualstudio.com/items?itemName=chef-software.Chef)
-- [Chef on Atom](https://atom.io/packages/language-chef)
-
-### Starter Kit
+## Starter Kit
 
 If you have access to Chef Infra Server through Automate or Chef Manage,
-you can download the starter kit. The starter kit will create the
-necessary configuration files: the `.chef` directory, `config.rb`,
-`ORGANIZATION-validator.pem`, and `USER.pem`. Simply download the
-starter kit and then move it to the desired location on your Chef
-Workstation machine.
+you can download the starter kit. The starter kit creates the basic configuration files: the `.chef` directory, `config.rb`, `ORGANIZATION-validator.pem`, and `USER.pem`. Download the starter kit and then move it to the desired location on your computer, which in most cases is your Home directory.
+
 
 ## Configure the Chef Repository
 
-### With WebUI
+### Chef Infra Server through the WebUI
 
-Use the following steps to manually set up the chef-repo and to use the
-Chef management console to get the `.pem` and `config.rb` files.
+If you have interact with Chef Infra Server through the web interface (either through Hosted Chef or legacy Chef Manage), follow the following steps to manually set up the chef-repo and to use the Chef management console to get the `.pem` and `config.rb` files.
 
 #### Get Config Files
 
@@ -179,7 +177,7 @@ To move files to the `.chef` directory:
 
 2. Verify that the files are in the `.chef` folder.
 
-### Without WebUI
+### Chef Infra Server from the Command Line
 
 Use the following steps to manually set up the Chef repository: On your
 Chef Infra Server, create the `ORGANIZATION-validator.pem` and
@@ -198,22 +196,19 @@ chef-server-ctl org-create ORG_NAME ORG_FULL_NAME -f FILE_NAME
 
 where
 
-- The name must begin with a lower-case letter or digit, may only
-    contain lower-case letters, digits, hyphens, and underscores, and
-    must be between 1 and 255 characters. For example: `chef`
-- The full name must begin with a non-whitespace character and must
-    be between 1 and 1023 characters. For example:
-    `"Chef Software, Inc."`
+- The name must begin with a lower-case letter or digit, may only contain lower-case letters, digits, hyphens, and underscores, and must be between 1 and 255 characters. For example: `4cafe`
+- The full name must begin with a non-whitespace character and must be between 1 and 1023 characters. For example:
+    `"Fourth Cafe, Inc."`
 - `-f FILE_NAME`: Write the `ORGANIZATION-validator.pem` to
     `FILE_NAME` instead of printing it to `STDOUT`. For example:
-    `/tmp/chef.key`.
+    `/tmp/4cafe.key`.
 
-For example, an organization named `chef`, with a full name of
-`Chef Software, Inc.`, and with the ORGANIZATION-validator.pem file
-saved to `/tmp/chef.key`:
+For example, an organization named `4cafe`, with a full name of
+`Fourthe Cafe, Inc.`, and with the ORGANIZATION-validator.pem file
+saved to `/tmp/4cafe.key`:
 
 ``` bash
-chef-server-ctl org-create chef "Chef Software, Inc." -f /tmp/chef.key
+chef-server-ctl org-create 4cafe "Fourth Cafe, Inc." -f /tmp/4cafe.key
 ```
 
 #### Create a User
@@ -228,14 +223,12 @@ chef-server-ctl user-create USER_NAME FIRST_NAME LAST_NAME EMAIL PASSWORD -f FIL
 where
 
 - `-f FILE_NAME` writes the `USER.pem` to a file instead of `STDOUT`.
-    For example: `/tmp/grantmc.key`.
+    For example: `/tmp/tbucatar.key`.
 
-For example: a user named `grantmc`, with a first and last name of
-`Grant McLennan`, an email address of `grantmc@chef.io`, a poorly-chosen
-password, and a `USER.pem` file saved to `/tmp/grantmc.key`:
+For example: a user named `tbucatar`, with a first and last name of `Tamira Bucatar`, an email address of `tbucatar@4cafe.com`, a password, and a `USER.pem` file saved to `/tmp/tbucatar.key`:
 
 ``` bash
-chef-server-ctl user-create grantmc Grant McLennan grantmc@chef.io p@s5w0rD! -f /tmp/grantmc.key
+chef-server-ctl user-create tbucatar Tamira Bucatar tbucatar@4cafe.com p@s5w0rD! -f /tmp/tbucatar.key
 ```
 
 #### Move .pem Files
@@ -243,7 +236,7 @@ chef-server-ctl user-create grantmc Grant McLennan grantmc@chef.io p@s5w0rD! -f 
 Download the `ORGANIZATION-validator.pem` and `USER.pem` files from the
 Chef Infra Server and move them to the `.chef` directory.
 
-To move files to the .chef directory:
+To move files to the `.chef` directory:
 
 1. In a command window, enter each of the following:
 
