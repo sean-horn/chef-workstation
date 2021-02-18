@@ -50,6 +50,7 @@ While you don't have to know the Ruby programming language to use Chef, you do n
 <!---- Panels Section --->
 {{< foundation_tabs_panels tabs-id="tabs-panel-container" >}}
 {{< foundation_tabs_panel active="true" panel-id="ruby-macOS-panel" >}}
+
 1. Open a terminal and enter:
 
     ``` bash
@@ -77,16 +78,18 @@ While you don't have to know the Ruby programming language to use Chef, you do n
    ``` bash
    which ruby
    ```
+
    should return:
 
    ``` bash
    /opt/chef-workstation/embedded/bin/ruby`
    ```
+
 {{< /foundation_tabs_panel >}}
 {{< foundation_tabs_panel panel-id="ruby-windows-panel" >}}
-Velit enim fugiat laboris irure veniam mollit cupidatat in duis ullamco adipisicing. Et ea sunt aute labore nisi consequat mollit et est sit. Officia culpa commodo deserunt reprehenderit deserunt dolor nostrud dolor minim. Dolore qui aliquip deserunt aute eiusmod aute. Dolore sint et sint ea duis aliqua exercitation minim officia nostrud mollit mollit. Reprehenderit qui occaecat nisi dolore.
 
-Proident non labore fugiat amet.
+NEED WINDOWS EXAMPLE
+
 {{< /foundation_tabs_panel >}}
 
 {{< /foundation_tabs_panels >}}
@@ -95,7 +98,6 @@ Proident non labore fugiat amet.
 
 Chef Workstation includes a stable version of Ruby as part of its installer.
 The path to this version of Ruby must be added to the `$PATH` environment variable and saved in the configuration file for the command shell (Bash, csh, and so on) that is used on the machine running Chef Workstation.
-
 
 <!---- Tabs Section--->
 {{< foundation_tabs tabs-id="tabs-panel-container" >}}
@@ -225,7 +227,6 @@ To move files to the `.chef` directory:
 
 {{< /foundation_tabs_panels >}}
 
-
 ### Chef Infra Server from the Command Line
 
 In this step, you will retrieve the key files, `ORGANIZATION-validator.pem` and `USER.pem` from your Chef Infra server, and store them in your `.chef` directory.
@@ -239,6 +240,7 @@ In this step, you will retrieve the key files, `ORGANIZATION-validator.pem` and 
 <!---- Panels Section --->
 {{< foundation_tabs_panels tabs-id="tabs-panel-container" >}}
 {{< foundation_tabs_panel active="true" panel-id="server-macOS-panel" >}}
+
 #### Move Key Files
 
 Download the `ORGANIZATION-validator.pem` and `USER.pem` files from the
@@ -268,7 +270,6 @@ To move files to the `.chef` directory:
 {{< /foundation_tabs_panel >}}
 
 {{< /foundation_tabs_panels >}}
-
 
 ## Set Up Chef Infra Client-to-Server Communication
 
