@@ -14,63 +14,42 @@ aliases = ["/workstation_setup.html", "/chefdk_setup.html", "/workstation.html",
     weight = 40
 +++
 
-This guide contains common configuration options used when setting up a
-new Chef Workstation installation. If you do not have Chef Workstation
-installed, see its [installation guide](/workstation/install_workstation/)
-before proceeding further.
+This guide walks your through setting up Chef Workstation on your computer.
+
+* [Setup Ruby for Chef Workstation]({{< relref "#Setup Ruby for Chef Workstation" >}})
+* [Set up your chef-repo]({{< relref "#Setup Your Chef Repo" >}}) for storing your cookbooks
+* [Understand your Chef Workstation installation]({{< relref "#Your Chef Workstation Installation" >}})
+* [Set up communication between Chef Workstation and Chef Infra Server]({{< relref "#Setup Chef Workstation and Chef Infra Server Communication" >}}) by transferring keys and configuring [knife]{{< relref "/workstation/knife.md" >}}.
+
+In order to use Chef Workstation effectively, you need to install and set up [Chef Infra Server]({{< relref "/server/install_server.md" >}})
+If you do not have Chef Workstation installed, see the [installation guide]({{< relref "/workstation/install_workstation.md" >}}) before proceeding further.
 
 ## Prerequisites
 
 1. [Download and install Chef Workstation]({{< relref "install_workstation.md" >}})
-1. A running instance of [Chef Infra Server]({{< relref "server/install_server.md" >}}) or [Hosted Chef Server](https://manage.chef.io/signup) set up with at least:
-   1. One administrator
-   1. One organization
-   1. One user
+1. A running instance of [Chef Infra Server]({{< relref "server/install_server.md" >}}) or [Hosted Chef Server](https://manage.chef.io/signup) and access to the:
+   1. `ORGANIZATION-validator.pem`
+   1. `USER.pem`
 1. Install a [Code Editor]({{< relref "#Code Editors" >}}) (optional)
 
-## Set up Ruby
+## Setup Ruby for Chef Workstation
 
 While you don't have to know the Ruby programming language to use Chef, you do need to make sure that your computer knows where to find Ruby in order to run.
 
-* If you don't plan on writing a lot of Chef cookbooks and you don't use Ruby for other purposes, then set up Ruby with an [environment variable]({{< ref "#Add Ruby as an Environment Variable" >}})
-* If you plan on using Ruby for authoring Chef cookbooks but don't use it for other purposes, then we recommend that you use [Chef Workstation's Ruby as the system Ruby]({{< ref "#Use Chef Workstation Ruby as the System Ruby">}}) Use Chef Workstation Ruby as the System Rubyusing the version of Ruby provided in Chef Workstation. Using Chef Workstation's Ruby as your system Ruby is optional.
-* If you use enough different versions of Ruby that you use a Ruby version manager such as RVM or rbenv, then make sure that you have the same version of Ruby available as we ship with Chef Workstation. You probably already know how to do it, but `rvm --help` or `rbenv --help` are great places to start.
-
-### Add Ruby as an Environment Variable
-
-Chef Workstation includes a stable version of Ruby as part of its installer.
-The path to this version of Ruby must be added to the `$PATH` environment variable and saved in the configuration file for the command shell (Bash, csh, and so on) that is used on the machine running Chef Workstation.
-
-In a terminal window, enter:
-
-``` bash
-echo 'export PATH="/opt/chef-workstation/embedded/bin:$PATH"' >> ~/.configuration_file && source ~/.configuration_file
-```
-
-where `configuration_file` is the name of the configuration file for the
-specific command shell. For example, if Bash were the command shell and
-the configuration file were named `bash_profile`, the command would look
-something like the following:
-
-``` bash
-echo 'export PATH="/opt/chef-workstation/embedded/bin:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
-```
-
-{{< warning >}}
-
-On Microsoft Windows, `C:/opscode/Chef Workstation/bin` must be before
-`C:/opscode/Chef Workstation/embedded/bin` in the `PATH`.
-
-{{< /warning >}}
+* If you don't plan on writing a lot of Chef cookbooks and you're not a Ruby developer, then we recommend that you set [Chef Workstation's Ruby as the system Ruby]({{< relref "#Use Chef-Workstation Ruby as the System Ruby">}})
+* If you are a Ruby developer, then set up Ruby with an [environment variable]({{< relref "#Add Ruby as an Environment Variable" >}}).
 
 ### Use Chef Workstation Ruby as the System Ruby
+<!---- Tabs Section--->
+{{< foundation_tabs tabs-id="tabs-panel-container" >}}
+{{< foundation_tab active="true" panel-link="ruby-macOS-panel" tab-text="macOS">}}
+{{< foundation_tab panel-link="ruby-windows-panel" tab-text="Windows" >}}
+{{< /foundation_tabs >}}
+<!---- End Tabs --->
 
-{{< note >}}
-
-These instructions are intended for macOS and Linux users.
-
-{{< /note >}}
-
+<!---- Panels Section --->
+{{< foundation_tabs_panels tabs-id="tabs-panel-container" >}}
+{{< foundation_tabs_panel active="true" panel-id="ruby-macOS-panel" >}}
 1. Open a terminal and enter:
 
     ``` bash
@@ -103,8 +82,59 @@ These instructions are intended for macOS and Linux users.
    ``` bash
    /opt/chef-workstation/embedded/bin/ruby`
    ```
+{{< /foundation_tabs_panel >}}
+{{< foundation_tabs_panel panel-id="ruby-windows-panel" >}}
+Velit enim fugiat laboris irure veniam mollit cupidatat in duis ullamco adipisicing. Et ea sunt aute labore nisi consequat mollit et est sit. Officia culpa commodo deserunt reprehenderit deserunt dolor nostrud dolor minim. Dolore qui aliquip deserunt aute eiusmod aute. Dolore sint et sint ea duis aliqua exercitation minim officia nostrud mollit mollit. Reprehenderit qui occaecat nisi dolore.
 
-## Create the Chef repository
+Proident non labore fugiat amet.
+{{< /foundation_tabs_panel >}}
+
+{{< /foundation_tabs_panels >}}
+<!---- End Panels --->
+### Add Ruby as an Environment Variable
+
+Chef Workstation includes a stable version of Ruby as part of its installer.
+The path to this version of Ruby must be added to the `$PATH` environment variable and saved in the configuration file for the command shell (Bash, csh, and so on) that is used on the machine running Chef Workstation.
+
+
+<!---- Tabs Section--->
+{{< foundation_tabs tabs-id="tabs-panel-container" >}}
+{{< foundation_tab active="true" panel-link="ruby-env-macOS-panel" tab-text="macOS">}}
+{{< foundation_tab panel-link="ruby-env-windows-panel" tab-text="Windows" >}}
+{{< /foundation_tabs >}}
+<!---- End Tabs --->
+
+<!---- Panels Section --->
+{{< foundation_tabs_panels tabs-id="tabs-panel-container" >}}
+{{< foundation_tabs_panel active="true" panel-id="ruby-env-macOS-panel" >}}
+In a terminal window, enter:
+
+``` bash
+echo 'export PATH="/opt/chef-workstation/embedded/bin:$PATH"' >> ~/.configuration_file && source ~/.configuration_file
+```
+
+where `configuration_file` is the name of the configuration file for the
+specific command shell. For example, if Bash were the command shell and
+the configuration file were named `bash_profile`, the command would look
+something like the following:
+
+``` bash
+echo 'export PATH="/opt/chef-workstation/embedded/bin:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
+```
+
+{{< /foundation_tabs_panel >}}
+{{< foundation_tabs_panel panel-id="ruby-env-windows-panel" >}}
+{{< warning >}}
+
+On Microsoft Windows, `C:/opscode/Chef Workstation/bin` must be before
+`C:/opscode/Chef Workstation/embedded/bin` in the `PATH`.
+
+{{< /warning >}}
+{{< /foundation_tabs_panel >}}
+
+{{< /foundation_tabs_panels >}}
+
+## Setup Your Chef Repo
 
 {{% chef_repo_description %}}
 
@@ -115,17 +145,38 @@ Use [the chef generate repo]({{< relref "ctl_chef.md#chef-generate-repo" >}}) co
 chef generate repo chef-repo
 ```
 
-## Starter Kit
+## Your Chef Workstation Installation
 
-If you have access to Chef Infra Server through Automate or Chef Manage,
-you can download the starter kit. The starter kit creates the basic configuration files: the `.chef` directory, `config.rb`, `ORGANIZATION-validator.pem`, and `USER.pem`. Download the starter kit and then move it to the desired location on your computer, which in most cases is your Home directory.
+Chef Workstation installs two different things onto your computer:
 
+1. [Chef products and tools]({{< relref "install_workstation.md" >}})
+1. The `~/.chef` directory
 
-## Configure the Chef Repository
+The `~/.chef` directory starts out with one file, an example `config.rb`.
+
+## Setup Chef Workstation and Chef Infra Server Communication
+
+To set up Chef Workstation up, you need to add the following files to your `~.chef` directory:
+
+* ORGANIZATION-validator.pem
+* USERNAME.pem
+* a completed `config.rb`
 
 ### Chef Infra Server through the WebUI
 
 If you have interact with Chef Infra Server through the web interface (either through Hosted Chef or legacy Chef Manage), follow the following steps to manually set up the chef-repo and to use the Chef management console to get the `.pem` and `config.rb` files.
+
+<!---- Tabs Section--->
+{{< foundation_tabs tabs-id="tabs-panel-container" >}}
+{{< foundation_tab active="true" panel-link="webui-macOS-panel" tab-text="macOS">}}
+{{< foundation_tab panel-link="webui-win-panel" tab-text="Windows" >}}
+
+{{< /foundation_tabs >}}
+<!---- End Tabs --->
+
+<!---- Panels Section --->
+{{< foundation_tabs_panels tabs-id="tabs-panel-container" >}}
+{{< foundation_tabs_panel active="true" panel-id="webui-macOS-panel" >}}
 
 #### Get Config Files
 
@@ -148,30 +199,46 @@ To move files to the `.chef` directory:
 1. In a command window, enter each of the following:
 
     ``` bash
-    cp /path/to/config.rb ~/chef-repo/.chef
+    cp /path/to/config.rb ~/.chef
     ```
 
     and:
 
     ``` bash
-    cp /path/to/ORGANIZATION-validator.pem ~/chef-repo/.chef
+    cp /path/to/ORGANIZATION-validator.pem ~/.chef
     ```
 
     and:
 
     ``` bash
-    cp /path/to/USERNAME.pem ~/chef-repo/.chef
+    cp /path/to/USERNAME.pem ~/.chef
     ```
 
     where `/path/to/` represents the path to the location in which these
     three files were placed after they were downloaded.
 
 2. Verify that the files are in the `.chef` folder.
+{{< /foundation_tabs_panel >}}
+{{< foundation_tabs_panel panel-id="webui-win-panel" >}}
+
+{{< /foundation_tabs_panel >}}
+
+{{< /foundation_tabs_panels >}}
+
 
 ### Chef Infra Server from the Command Line
 
 In this step, you will retrieve the key files, `ORGANIZATION-validator.pem` and `USER.pem` from your Chef Infra server, and store them in your `.chef` directory.
+<!---- Tabs Section--->
+{{< foundation_tabs tabs-id="tabs-panel-container" >}}
+{{< foundation_tab active="true" panel-link="server-macos-panel" tab-text="macOS">}}
+{{< foundation_tab panel-link="server-win-panel" tab-text="Windows" >}}
+{{< /foundation_tabs >}}
+<!---- End Tabs --->
 
+<!---- Panels Section --->
+{{< foundation_tabs_panels tabs-id="tabs-panel-container" >}}
+{{< foundation_tabs_panel active="true" panel-id="server-macOS-panel" >}}
 #### Move Key Files
 
 Download the `ORGANIZATION-validator.pem` and `USER.pem` files from the
@@ -182,7 +249,7 @@ To move files to the `.chef` directory:
 1. In a command window, enter each of the following:
 
     ``` bash
-    cp /path/to/ORGANIZATION-validator.pem ~/chef-repo/.chef
+    cp /path/to/ORGANIZATION-validator.pem ~/.chef
     ```
 
     and:
@@ -195,12 +262,28 @@ To move files to the `.chef` directory:
     three files were placed after they were downloaded.
 
 2. Verify that the files are in the `.chef` folder.
+{{< /foundation_tabs_panel >}}
+{{< foundation_tabs_panel panel-id="server-win-panel" >}}
 
-## Set Up Client-to-Server Communication
+{{< /foundation_tabs_panel >}}
 
-Navigate to the `~/chef-repo/.chef` directory and create the `config.rb`
-using the `knife configure` tool. The file must be created in the
-`.chef` folder. It should look similar to:
+{{< /foundation_tabs_panels >}}
+
+
+## Set Up Chef Infra Client-to-Server Communication
+
+Navigate to the `~/.chef` directory and set up the `config.rb`
+with your information tool.
+
+At a minimum, you must update the following settings with the
+appropriate values:
+
+- `client_key` is the location of the Chef Infra Server user's `.pem` file on your Chef Workstation machine.
+- `validation_client_name` should be updated with the name of the desired organization that was created on the Chef Infra Server.
+- `validation_key` should point to the location of your organization's `.pem` file on your Chef Workstation machine.
+- `chef_server_url` must be updated with the domain or IP address used to access the Chef Infra Server.
+
+It should look similar to:
 
 ``` ruby
 current_dir = File.dirname(__FILE__)
@@ -215,18 +298,6 @@ cache_type               'BasicFile'
 cache_options( :path => "#{ENV['HOME']}/.chef/checksums" )
 cookbook_path            ["#{current_dir}/../cookbooks"]
 ```
-
-At a minimum, you must update the following settings with the
-appropriate values:
-
-- `client_key` should point to the location of the Chef Infra Server
-    user's `.pem` file on your Chef Workstation machine.
-- `validation_client_name` should be updated with the name of the
-    desired organization that was created on the Chef Infra Server.
-- `validation_key` should point to the location of your organization's
-    `.pem` file on your Chef Workstation machine.
-- `chef_server_url` must be updated with the domain or IP address used
-    to access the Chef Infra Server.
 
 See the [knife config.rb documentation](/workstation/config_rb/) for more
 details.
@@ -343,6 +414,6 @@ Chef Infra support in editors:
 
 ## Further Reading
 
-* [Chef Run CLI Reference]({{< ref "chef_run.md" >}})
+* [Chef Run CLI Reference]({{< relref "chef_run.md" >}})
 * [Introducing Chef Workstation](https://blog.chef.io/2018/05/23/introducing-chef-workstation/)
 * [Chef Workstation - How We Made that Demo](https://blog.chef.io/2018/06/25/chef-workstation-how-we-made-that-demo/)
