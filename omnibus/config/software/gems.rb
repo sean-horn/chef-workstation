@@ -41,8 +41,8 @@ dependency "google-protobuf"
 
 # This is a transative dep but we need to build from source so binaries are built on current sdk.
 # Only matters on mac.
-# @todo Contact gem mainter about getting new release.
-dependency "rb-fsevent-gem" if mac_os_x?
+# @todo https://github.com/guard/rb-fsevent/issues/83
+dependency "rb-fsevent-gem" if macos?
 
 build do
   env = with_standard_compiler_flags(with_embedded_path)
@@ -65,8 +65,7 @@ build do
   # install the whole bundle first
   bundle "install --jobs 10 --without #{excluded_groups.join(" ")}", env: env
 
-  appbundle "chef", lockdir: project_dir, gem: "chef", without: %w{docgen chefstyle omnibus_package}, env: env
-
+  appbundle "knife", lockdir: project_dir, gem: "knife", without: %w{development}, env: env
   appbundle "foodcritic", lockdir: project_dir, gem: "chef_deprecations", without: %w{development test}, env: env
   appbundle "test-kitchen", lockdir: project_dir, gem: "test-kitchen", without: %w{changelog debug docs development integration}, env: env
   appbundle "inspec", lockdir: project_dir, gem: "inspec-bin", without: %w{deploy tools maintenance integration}, env: env
